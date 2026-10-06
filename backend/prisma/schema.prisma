@@ -8,3 +8,28 @@ datasource db {
 }
 
 // TODO: Define Prisma models here later
+model User {
+  userId       Int      @id @default(autoincrement())
+  name         String   @db.VarChar(100)
+  email        String   @unique @db.VarChar(150)
+  phone        String   @unique @db.VarChar(15)
+  passwordHash String
+  createdAt    DateTime @default(now())
+
+  // Relationships
+  roles         UserRole[]
+  communities   UserCommunity[]
+  vehicles      Vehicle[]
+  rides         Ride[]
+  bookings      Booking[]
+
+  // Ratings given and received
+  ratingsGiven    Rating[] @relation("RatingsGiven")
+  ratingsReceived Rating[] @relation("RatingsReceived")
+
+  // Cancellations performed by this user
+  cancellations Cancellation[]
+
+  @@map("users")
+}
+
